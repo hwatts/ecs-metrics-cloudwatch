@@ -6,7 +6,7 @@ Deployed using Serverless Application Model - this creates a cloudwatch event ru
 
 First package the application to an S3 bucket that you own:
 
-```YAML
+```sh
 aws cloudformation package \
     --template-file template.yaml \
     --output-template-file ecs-metrics-deploy.yaml \
@@ -15,7 +15,7 @@ aws cloudformation package \
 
 Then deploy using the output template:
 
-```YAML
+```sh
 aws cloudformation deploy \
     --template-file ecs-metrics-deploy.yaml \
     --stack-name ecs-metrics \
