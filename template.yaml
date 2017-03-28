@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Triggered on a cloudwatch event to record stopped tasks cloudwatch custom metrics for ECS with cluster ID, instance ID and service name dimensions
+Resources:
+  ScheduledFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: ecsTaskStopped.handler
+      Policies:
+        - Version: 2012-10-17
+          Statement:
+           - Effect: Allow
+             Action:
+              - cloudwatch:PutMetricData
+             Resource:
+              - '*'
+      Runtime: python2.7
+      Events:
+        ECSStoppedTask:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              source:
+               - aws.ecs
+              detail-type:
+               - ECS Task State Change
+              detail:
+                lastStatus:
+                 - STOPPED
+                stoppedReason:
+                 - Essential container in task exited
